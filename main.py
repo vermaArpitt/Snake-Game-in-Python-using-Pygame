@@ -1,19 +1,72 @@
 import pygame as p
+import random
 
-p.init()
+WIDTH = 1000
+HEIGHT = 700
 
 def main():
+    p.init()
+
+    #Setting game screen
+    screen = p.display.set_mode((WIDTH, HEIGHT))
+    p.display.set_caption("Hungry Hungry Snake")
+
+    #Game variables
     exit_game = False
     game_over = False
-    screen = p.display.set_mode((500, 750))
-    p.display.set_caption("Flappy Bird")
+    snakeX = 500
+    snakeY = 350
+    snakeSize = 25
+    fps = 30
+    init_Velocity = 6
+    velocityX = init_Velocity
+    velocityY = 0
+    fruitX = 700
+    fruitY = 350
+    fruitSize = 25
+    score = 0
 
-    while not exit_game:
+    clock = p.time.Clock()
+    #Game loop
+    while not exit_game:           
         for event in p.event.get():
             if event.type == p.QUIT:
                 exit_game = True
+            
+            elif event.type == p.KEYDOWN:
+                    if event.key == p.K_RIGHT:
+                         velocityX = init_Velocity
+                         velocityY = 0
 
-p.quit()
+                    elif event.key == p.K_LEFT:
+                         velocityX = -init_Velocity
+                         velocityY = 0
+
+                    elif event.key == p.K_UP:
+                         velocityX = 0
+                         velocityY = -init_Velocity
+
+                    elif event.key == p.K_DOWN:
+                         velocityX = 0
+                         velocityY = init_Velocity
+
+        screen.fill("green")
+        p.draw.rect(screen, "red", [fruitX, fruitY, fruitSize, fruitSize])
+        p.draw.rect(screen, "black", [snakeX, snakeY, snakeSize, snakeSize])
+        p.display.update()
+        clock.tick(fps)
+
+        #snake movement
+        snakeX += velocityX
+        snakeY += velocityY
+
+        #spawning fruit after eating
+        if(abs(snakeX - fruitX) <= 5 and abs(fruitY - snakeY) <= 5):
+            fruitX = random.randint(0, WIDTH-fruitSize)
+            fruitY = random.randint(0, HEIGHT-fruitSize)
+            score += 1
+
+    p.quit()
 
 if __name__ == "__main__":
     main()
