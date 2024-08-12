@@ -4,6 +4,8 @@ import random
 p.init()
 WIDTH = 1000
 HEIGHT = 700
+fps = 30
+clock = p.time.Clock()
 
 def display_text(screen, text, x, y, color, size):
      font = p.font.SysFont(None, size)
@@ -14,12 +16,7 @@ def draw_snake(screen, snakeList, color, snakeSize):
      for snakeX, snakeY in snakeList:
           p.draw.rect(screen, color, [snakeX, snakeY, snakeSize, snakeSize])
 
-def main():
-
-    #Setting game screen
-    screen = p.display.set_mode((WIDTH, HEIGHT))
-    p.display.set_caption("Hungry Hungry Snake!")
-
+def gameLoop(screen):
     #Game variables
     exit_game = False
     game_over = False
@@ -29,7 +26,6 @@ def main():
     head = []
     snakeLength = 25
     snakeList = []
-    fps = 30
     init_Velocity = 6
     velocityX = init_Velocity
     velocityY = 0
@@ -38,15 +34,24 @@ def main():
     fruitSize = 25
     score = 0
 
-    clock = p.time.Clock()
     #Game loop
     while not exit_game:
         if game_over:
-            display_text(screen, "Game Over!", 503, 353, "white", 65)
-            display_text(screen, "Game Over!", 500, 350, "black", 65)
+            display_text(screen, "Game Over!", 383, 253, "white", 65)
+            display_text(screen, "Game Over!", 380, 250, "black", 65)
+            display_text(screen, "Press Space to Retry", 400, 400, "black", 30)
+            display_text(screen, "Press Enter to Return", 400, 450, "black", 30)
+
             for event in p.event.get():
                 if event.type == p.QUIT:
                     exit_game = True
+
+                elif event.type == p.KEYDOWN:
+                    if event.key == p.K_RETURN:
+                        gameMenu(screen)
+                    
+                    elif event.key == p.K_SPACE:
+                        gameLoop(screen)
 
         else:
             for event in p.event.get():
@@ -109,6 +114,35 @@ def main():
         clock.tick(fps)
 
     p.quit()
+
+def gameMenu(screen):
+    screen.fill("blue")
+    display_text(screen, "Hungry Hungry Snake!", 255, 205, "black", 70)
+    display_text(screen, "Hungry Hungry Snake!", 250, 200, "green", 70)
+
+    display_text(screen, "__Press Space to Play__", 290, 350, "black", 50)
+
+    exit_game = False
+    while not exit_game:
+        for event in p.event.get():
+            if event.type == p.QUIT:
+                    exit_game = True
+
+            elif event.type == p.KEYDOWN:
+                    if event.key == p.K_SPACE:
+                        gameLoop(screen)
+
+        p.display.update()
+        clock.tick(fps)
+
+    p.quit()   
+
+def main():
+    #Setting game screen
+    screen = p.display.set_mode((WIDTH, HEIGHT))
+    p.display.set_caption("Hungry Hungry Snake!")
+
+    gameMenu(screen)
 
 if __name__ == "__main__":
     main()
