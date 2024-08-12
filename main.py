@@ -1,15 +1,20 @@
 import pygame as p
 import random
 
+p.init()
 WIDTH = 1000
 HEIGHT = 700
 
+def display_text(screen, text, x, y, color, size):
+     font = p.font.SysFont(None, size)
+     img = font.render(text, True, color)
+     screen.blit(img, [x,y])
+
 def main():
-    p.init()
 
     #Setting game screen
     screen = p.display.set_mode((WIDTH, HEIGHT))
-    p.display.set_caption("Hungry Hungry Snake")
+    p.display.set_caption("Hungry Hungry Snake!")
 
     #Game variables
     exit_game = False
@@ -51,6 +56,8 @@ def main():
                          velocityY = init_Velocity
 
         screen.fill("green")
+        display_text(screen, "Score: " + str(score), 11, 11, "black", 55)
+        display_text(screen, "Score: " + str(score), 10, 10, "yellow", 55)
         p.draw.rect(screen, "red", [fruitX, fruitY, fruitSize, fruitSize])
         p.draw.rect(screen, "black", [snakeX, snakeY, snakeSize, snakeSize])
         p.display.update()
@@ -63,7 +70,7 @@ def main():
         #spawning fruit after eating
         if(abs(snakeX - fruitX) <= 5 and abs(fruitY - snakeY) <= 5):
             fruitX = random.randint(0, WIDTH-fruitSize)
-            fruitY = random.randint(0, HEIGHT-fruitSize)
+            fruitY = random.randint(70, HEIGHT-fruitSize)
             score += 1
 
     p.quit()
