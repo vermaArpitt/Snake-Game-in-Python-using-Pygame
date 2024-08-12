@@ -10,6 +10,10 @@ def display_text(screen, text, x, y, color, size):
      img = font.render(text, True, color)
      screen.blit(img, [x,y])
 
+def draw_snake(screen, snakeList, color, snakeSize):
+     for snakeX, snakeY in snakeList:
+          p.draw.rect(screen, color, [snakeX, snakeY, snakeSize, snakeSize])
+
 def main():
 
     #Setting game screen
@@ -22,6 +26,9 @@ def main():
     snakeX = 500
     snakeY = 350
     snakeSize = 25
+    head = []
+    snakeLength = 1
+    snakeList = []
     fps = 30
     init_Velocity = 6
     velocityX = init_Velocity
@@ -58,8 +65,19 @@ def main():
         screen.fill("green")
         display_text(screen, "Score: " + str(score), 11, 11, "black", 55)
         display_text(screen, "Score: " + str(score), 10, 10, "yellow", 55)
+
+        #Drawing the Fruit
         p.draw.rect(screen, "red", [fruitX, fruitY, fruitSize, fruitSize])
-        p.draw.rect(screen, "black", [snakeX, snakeY, snakeSize, snakeSize])
+
+        #Drawing the snake
+        head = [snakeX, snakeY]
+        snakeList.append(head)
+
+        if(len(snakeList) > snakeLength):
+             del(snakeList[0])
+
+        draw_snake(screen, snakeList, "black", snakeSize)
+        
         p.display.update()
         clock.tick(fps)
 
@@ -72,6 +90,9 @@ def main():
             fruitX = random.randint(0, WIDTH-fruitSize)
             fruitY = random.randint(70, HEIGHT-fruitSize)
             score += 1
+            snakeLength += 1
+            if(score % 10 == 0):
+                 init_Velocity += 1
 
     p.quit()
 
