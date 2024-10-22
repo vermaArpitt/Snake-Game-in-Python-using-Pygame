@@ -54,27 +54,6 @@ def gameLoop(screen):
                         gameLoop(screen)
 
         else:
-            for event in p.event.get():
-                if event.type == p.QUIT:
-                    exit_game = True
-                        
-                elif event.type == p.KEYDOWN:
-                    if event.key == p.K_RIGHT:
-                        velocityX = init_Velocity
-                        velocityY = 0
-
-                    elif event.key == p.K_LEFT:
-                        velocityX = -init_Velocity
-                        velocityY = 0
-
-                    elif event.key == p.K_UP:
-                        velocityX = 0
-                        velocityY = -init_Velocity
-
-                    elif event.key == p.K_DOWN:
-                        velocityX = 0
-                        velocityY = init_Velocity
-
             screen.fill("green")
 
             #Displaying the score
@@ -112,6 +91,27 @@ def gameLoop(screen):
         
         p.display.update()
         clock.tick(fps)
+
+        for event in p.event.get():
+                if event.type == p.QUIT:
+                    exit_game = True
+                        
+                elif event.type == p.KEYDOWN:
+                    if event.key == p.K_RIGHT:
+                        velocityX = init_Velocity
+                        velocityY = 0
+
+                    elif event.key == p.K_LEFT:
+                        velocityX = -init_Velocity
+                        velocityY = 0
+
+                    elif event.key == p.K_UP:
+                        velocityX = 0
+                        velocityY = -init_Velocity
+
+                    elif event.key == p.K_DOWN:
+                        velocityX = 0
+                        velocityY = init_Velocity
 
     p.quit()
 
